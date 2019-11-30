@@ -11,7 +11,7 @@ songData.forEach((song, i) => {
 });
 
 const fave = (tracks, action) => {
-  return tracks.map(track => {
+  const newTracks = tracks[action.side].map(track => {
     if (track.id === action.id) {
       return { ...track, favorite: !track.favorite };
     }
@@ -19,38 +19,56 @@ const fave = (tracks, action) => {
       return track;
     }
   });
+
+  if (action.side === 'morningTracks') {
+    return {
+      morningTracks: newTracks,
+      eveningTracks: tracks.eveningTracks
+    };
+  }
+  else {
+    return {
+      morningTracks: tracks.morningTracks,
+      eveningTracks: newTracks
+    };
+  }
 };
 
 const top = (tracks, action) => {
-  const i = tracks.findIndex(track => track.id === action.id);
+  const i = tracks[action.side].findIndex(track => track.id === action.id);
+  let newTracks = [];
   
   if (i === -1) {
     return tracks;
   }
   else {
-    let newTracks = [...tracks];
+    newTracks = [...tracks[action.side]];
     const track = newTracks[i];
 
     newTracks.splice(i, 1);
     newTracks.unshift(track);
+  }
 
-    return newTracks;
+  if (action.side === 'morningTracks') {
+    return {
+      morningTracks: newTracks,
+      eveningTracks: tracks.eveningTracks
+    };
+  }
+  else {
+    return {
+      morningTracks: tracks.morningTracks,
+      eveningTracks: newTracks
+    };
   }
 };
 
-const transact = ({ morningTracks, eveningTracks }, action) => {
+const tracksReducer = (tracks, action) => {
   switch(action.type) {
     case 'FAVE':
-      return {
-        morningTracks: fave(morningTracks, action),
-        eveningTracks: fave(eveningTracks, action)
-      };
-    case 'TOP': {
-      return {
-        morningTracks: top(morningTracks, action),
-        eveningTracks: top(eveningTracks, action)
-      };
-    }
+      return fave(tracks, action);
+    case 'TOP':
+      return top(tracks, action);
     default:
       return playlists;
   }
@@ -62,7 +80,7 @@ const playlists = {
 };
 
 const App = () => {
-  const [state, dispatch] = useReducer(transact, playlists);
+  const [state, dispatch] = useReducer(tracksReducer, playlists);
   
   return (
     <div className="App">

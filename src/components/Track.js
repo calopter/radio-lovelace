@@ -5,27 +5,30 @@ import "./styles/Track.css";
 
 // Here we use destructuring to extract the props into separate variables
 // See https://wesbos.com/destructuring-objects/
-const Track = ({title, artist, playtime, albumart, favorite, dispatch, id }) => {
+const Track = (props) => {
+  const side = props.side.toLowerCase() + 'Tracks';
+  
   return (
     <li className="track">
-      <img className="track--albumart" alt={`album art for ${title}`} src={albumart} />
-      <h3 className="track--title">{title}</h3>
+      <img className="track--albumart" alt={`album art for ${props.title}`} src={props.albumart} />
+      <h3 className="track--title">{props.title}</h3>
       <input
         type="checkbox"
         className="track--favorite"
-        checked={favorite}
-        onChange={() => dispatch({ type: 'FAVE', id: id })}
+        checked={props.favorite}
+        onChange={() => props.dispatch({ type: 'FAVE', id: props.id, side: side })}
       />
-      <p className="track--artist">{artist}</p>
-      <p className="track--playtime">{playtime}</p>
+      <p className="track--artist">{props.artist}</p>
+      <p className="track--playtime">{props.playtime}</p>
       <button
         className="track--control track--to-top"
-        onClick={() => dispatch({ type: 'TOP', id: id })}
+        onClick={() => props.dispatch({ type: 'TOP', id: props.id, side: side })}
         >
         <span role="img" aria-label="send to top">🔝</span>
       </button>
       <button
         className="track--control track--switch"
+        onClick={() => props.dispatch({ type: 'SWITCH', id: props.id, side: side })}
         >
         <span role="img" aria-label="switch lists">↔</span>
       </button>
