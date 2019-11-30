@@ -34,7 +34,9 @@ const Playlist = (props) => {
     // the variable 'track' as props. Go look it up!
     return (
       <Track
+        id={track.id}
         key={track.id}
+        dispatch={props.dispatch}
         {...track}
       />
     );

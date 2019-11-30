@@ -5,7 +5,7 @@ import "./styles/Track.css";
 
 // Here we use destructuring to extract the props into separate variables
 // See https://wesbos.com/destructuring-objects/
-const Track = ({title, artist, playtime, albumart, favorite}) => {
+const Track = ({title, artist, playtime, albumart, favorite, dispatch, id }) => {
   return (
     <li className="track">
       <img className="track--albumart" alt={`album art for ${title}`} src={albumart} />
@@ -14,6 +14,7 @@ const Track = ({title, artist, playtime, albumart, favorite}) => {
         type="checkbox"
         className="track--favorite"
         checked={favorite}
+        onChange={() => dispatch({ type: 'FAVE', id: id })}
       />
       <p className="track--artist">{artist}</p>
       <p className="track--playtime">{playtime}</p>
