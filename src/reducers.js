@@ -1,5 +1,5 @@
-const fave = (tracks, action) => {
-  const newTracks = tracks[action.side].map(track => {
+const favorite = (tracks, action) => {
+  return tracks.map(track => {
     if (track.id === action.id) {
       return { ...track, favorite: !track.favorite };
     }
@@ -7,19 +7,13 @@ const fave = (tracks, action) => {
       return track;
     }
   });
+};
 
-  if (action.side === 'morningTracks') {
+const fave = (tracks, action) => {
     return {
-      morningTracks: newTracks,
-      eveningTracks: tracks.eveningTracks
+      ...tracks, 
+      [action.side]: favorite(tracks[action.side], action)
     };
-  }
-  else {
-    return {
-      morningTracks: tracks.morningTracks,
-      eveningTracks: newTracks
-    };
-  }
 };
 
 const top = (tracks, action) => {
