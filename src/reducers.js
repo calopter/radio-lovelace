@@ -16,33 +16,23 @@ const fave = (tracks, action) => {
     };
 };
 
-const top = (tracks, action) => {
-  const i = tracks[action.side].findIndex(track => track.id === action.id);
-  let newTracks = [];
+const sendTop = (tracks, action) => {
+  const i = tracks.findIndex(track => track.id === action.id);
   
-  if (i === -1) {
-    return tracks;
-  }
-  else {
-    newTracks = [...tracks[action.side]];
-    const track = newTracks[i];
+  let newTracks = [...tracks];
+  const track = newTracks[i];
 
-    newTracks.splice(i, 1);
-    newTracks.unshift(track);
-  }
+  newTracks.splice(i, 1);
+  newTracks.unshift(track);
 
-  if (action.side === 'morningTracks') {
-    return {
-      morningTracks: newTracks,
-      eveningTracks: tracks.eveningTracks
-    };
-  }
-  else {
-    return {
-      morningTracks: tracks.morningTracks,
-      eveningTracks: newTracks
-    };
-  }
+  return newTracks;
+};
+
+const top = (tracks, action) => {
+  return {
+    ...tracks,
+    [action.side]: sendTop(tracks[action.side], action)
+  };
 };
 
 const switchTrack = (tracks, action) => {
