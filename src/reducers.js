@@ -10,10 +10,10 @@ const favorite = (tracks, action) => {
 };
 
 const fave = (tracks, action) => {
-    return {
-      ...tracks, 
-      [action.side]: favorite(tracks[action.side], action)
-    };
+  return {
+    ...tracks, 
+    [action.side]: favorite(tracks[action.side], action)
+  };
 };
 
 const sendTop = (tracks, action) => {
@@ -35,33 +35,32 @@ const top = (tracks, action) => {
   };
 };
 
-const switchTrack = (tracks, action) => {
-  const i = tracks[action.side].findIndex(track => track.id === action.id);
+const swapLists = (tracks, { side, to, id }) => {
+  const i = tracks[side].findIndex(track => track.id === id);
 
-  let newFrom = [...tracks[action.side]];
-  let newTo = [];
+  const newFrom = [...tracks[side]];
+  const newTo = [...tracks[to]];
   
   newFrom.splice(i, 1);
-  
+  newTo.splice(i, 0, tracks[side][i]);
+
+  return {
+    ...tracks,
+    [side]: newFrom,
+    [to]: newTo
+  };
+};
+
+const switchTrack = (tracks, action) => {
   if (action.side === 'morningTracks') {
-    newTo = [...tracks.eveningTracks];
-    newTo.splice(i, 0, tracks.morningTracks[i]);
-    
-    return {
-      morningTracks: newFrom,
-      eveningTracks: newTo
-    };
+    action.to = 'eveningTracks';
   }
   else {
-    newTo = [...tracks.morningTracks];
-    newTo.splice(i, 0, tracks.eveningTracks[i]);
-    
-    return {
-      morningTracks: newTo,
-      eveningTracks: newFrom
-    };
+    action.to = 'morningTracks';
   }
-}
+
+  return swapLists(tracks, action);
+};
 
 const tracksReducer = (tracks, action) => {
   switch(action.type) {
