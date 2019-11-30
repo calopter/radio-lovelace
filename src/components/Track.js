@@ -20,6 +20,7 @@ const Track = ({title, artist, playtime, albumart, favorite, dispatch, id }) => 
       <p className="track--playtime">{playtime}</p>
       <button
         className="track--control track--to-top"
+        onClick={() => dispatch({ type: 'TOP', id: id })}
         >
         <span role="img" aria-label="send to top">🔝</span>
       </button>

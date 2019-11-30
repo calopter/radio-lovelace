@@ -10,6 +10,23 @@ songData.forEach((song, i) => {
   song.favorite = false;
 });
 
+const top = (tracks, action) => {
+  const i = tracks.findIndex(track => track.id === action.id);
+  
+  if (i === -1) {
+    return tracks;
+  }
+  else {
+    let newTracks = [...tracks];
+    const track = newTracks[i];
+
+    newTracks.splice(i, 1);
+    newTracks.unshift(track);
+
+    return newTracks;
+  }
+};
+
 const transact = ({ morningTracks, eveningTracks }, action) => {
   const fave = (track) => {
     console.log(action);
@@ -27,6 +44,12 @@ const transact = ({ morningTracks, eveningTracks }, action) => {
         morningTracks: morningTracks.map(fave, action),
         eveningTracks: eveningTracks.map(fave, action)
       };
+    case 'TOP': {
+      return {
+        morningTracks: top(morningTracks, action),
+        eveningTracks: top(eveningTracks, action)
+      };
+    }
     default:
       return playlists;
   }
