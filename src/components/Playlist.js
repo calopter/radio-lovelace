@@ -36,7 +36,6 @@ const Playlist = (props) => {
       <Track
         id={track.id}
         key={track.id}
-        dispatch={props.dispatch}
         side={props.side}
         {...track}
       />

@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
+import { RadioDispatch } from '../App.js';
 
 import "./styles/Track.css";
 
 // Here we use destructuring to extract the props into separate variables
 // See https://wesbos.com/destructuring-objects/
 const Track = (props) => {
+  const dispatch = useContext(RadioDispatch);
   const side = props.side.toLowerCase() + 'Tracks';
   
   return (
@@ -16,19 +18,19 @@ const Track = (props) => {
         type="checkbox"
         className="track--favorite"
         checked={props.favorite}
-        onChange={() => props.dispatch({ type: 'FAVE', id: props.id, side: side })}
+        onChange={() => dispatch({ type: 'FAVE', id: props.id, side: side })}
       />
       <p className="track--artist">{props.artist}</p>
       <p className="track--playtime">{props.playtime}</p>
       <button
         className="track--control track--to-top"
-        onClick={() => props.dispatch({ type: 'TOP', id: props.id, side: side })}
+        onClick={() => dispatch({ type: 'TOP', id: props.id, side: side })}
         >
         <span role="img" aria-label="send to top">🔝</span>
       </button>
       <button
         className="track--control track--switch"
-        onClick={() => props.dispatch({ type: 'SWITCH', id: props.id, side: side })}
+        onClick={() => dispatch({ type: 'SWITCH', id: props.id, side: side })}
         >
         <span role="img" aria-label="switch lists">↔</span>
       </button>

@@ -3,19 +3,17 @@ import "./styles/RadioSet.css";
 
 import Playlist from './Playlist';
 
-const RadioSet = ({ playlists, dispatch }) => {
+const RadioSet = ({ playlists: { morningTracks, eveningTracks }}) => {
   return (
     <div className="radio-set">
       <section className="radio-set--playlist-container">
         <Playlist
           side="Morning"
-          tracks={playlists.morningTracks}
-          dispatch={dispatch}
+          tracks={morningTracks}
         />
         <Playlist
           side="Evening"
-          tracks={playlists.eveningTracks}
-          dispatch={dispatch}
+          tracks={eveningTracks}
         />
       </section>
     </div>

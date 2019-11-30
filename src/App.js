@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, createContext } from 'react';
 import './App.css';
 
 import RadioSet from './components/RadioSet';
@@ -17,6 +17,8 @@ const playlists = {
   eveningTracks: songData.slice(songData.length / 2, songData.length)
 };
 
+export const RadioDispatch = createContext();
+
 const App = () => {
   const [state, dispatch] = useReducer(tracksReducer, playlists);
   
@@ -26,7 +28,9 @@ const App = () => {
         <h1 className="page-header--title">Radio Lovelace</h1>
       </header>
       <main className="main">
-        <RadioSet playlists={state} dispatch={dispatch} />
+        <RadioDispatch.Provider value={dispatch}>
+          <RadioSet playlists={state} />
+        </RadioDispatch.Provider>
       </main>
     </div>
   );
